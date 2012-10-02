@@ -1,72 +1,97 @@
-# -*- coding: utf-8 -*-
-import os
+import os, datetime
 
-# Retrieve Flask, our framework
-# request module gives access to incoming request data
-from flask import Flask, request
+from flask import Flask, request # Retrieve Flask, our framework
+from flask import render_template, url_for
 
-app = Flask(__name__)
+app = Flask(__name__)   # create our flask app
 
-# Home Page
-@app.route('/')
-def cabinet():
-    return """<h1>Welcome to 'Something Borrowed...'</h1><br/><br/>
-    <h2>A place to find and share materials at ITP.</h2><br/>
-    <a href='/create'>Create your account</a> or <a href='/login'>Login</a><br>
-    <a href='/about'>About us</a>"""
 
-# Create your account page
-@app.route('/create', methods=["GET","POST"])
-def create():
-    # Did the client make a POST request?
-	if request.method == "POST":
+# ITP'S CABINET
+books = { }
 
-		# get the form data submitted and store it in a variable
-		# the second value is an option for if the user doesn't input any value
-		name = request.form.get('name', 'Tim Berners-Lee')
-		#email = request.form.get('email', 'tim_berners_lee@gmail.com')
-		#user_name = request.form.get('user_name', 'T.B. Lee')
+books['Understanding Comics'] = {
+	'title' : 'Understanding Comics',
+	'author' : 'Scott McCloud',
+	'image' : 'understanding_comics.gif',
+	'type' : 'Paperback',
+	'genre' : 'Art',
+	'description' : """Praised throughout the cartoon industry by such luminaries as Art Spiegelman, 
+					Matt Groening, and Will Eisner, this innovative comic book provides a detailed look at the history, 
+					meaning, and art of comics and cartooning.""",
+	'inStock' : True,
+	'owner' : 'Bruna Calheiros',
+	'email' : 'bms415@nyu.edu',
+	'itpStatus' : 'Current Student'
+}
 
-		# return custom HTML using the user submitted data
-		return """
-		<html><body style=''><h1>Hello %s!</h1><br>
-		<h2>Welcome to 'Something Borrowed...'!</br>
-		We are excited to have you here!</h2></br></br>
-		<a href='/'> -- Back Home -- </a></body><html>""" % (name)
+books['Learning Processing'] = { 
+	'title' : 'Learning Processing',
+	'author' : 'Daniel Shiffman',
+	'image' : 'learning_processing.gif',
+	'type' : 'Paperback',
+	'genre' : 'Programming',
+	'description' : """This book teaches you the basic building blocks of programming needed to create cutting-edge graphics applications including 
+					interactive art, live video processing, and data visualization.""",
+	'inStock' : True,
+	'owner' : 'Bruna Calheiros',
+	'email' : 'bms415@nyu.edu',
+	'itpStatus' : 'Current Student'
+	}
 
-	else:
+books['Getting Started with Arduino'] = { 
+	'title' : 'Getting Started with Arduino',
+	'author' : 'Massimo Banzi',
+	'image' : 'getting_started_with_arduino.gif',
+	'type' : 'Paperback',
+	'genre' : 'Programming',
+	'description' : """Arduino is the open-source electronics prototyping platform that\'s taken the design and hobbyist world by storm. 
+					This thorough introduction, updated for Arduino 1.0, gives you lots of ideas for projects and helps you work with them right away.""",
+	'inStock' : True,
+	'owner' : 'Bruna Calheiros',
+	'email' : 'bms415@nyu.edu',
+	'itpStatus' : 'Current Student'
+	}
 
-		# client made a GET request for '/create'
-		# return a simple HTML form that POSTs to itself
-		return """<html><body>
-		<form action="/create" method="POST">
-			What's your name? <input type="text" name="name" id="name"/>
-			<input type="submit" value="That's it!"/>
-		</form>
-		</body></html>"""
+books['The Laws of Simplicity'] = { 
+	'title' : 'The Laws of Simplicity',
+	'author' : 'John Maeda',
+	'image' : 'the_laws_of_simplicity.gif',
+	'type' : 'Hardcover',
+	'genre' : 'Design',
+	'description' : """Maeda's concise guide to simplicity in the digital age shows us how this idea can be a cornerstone of 
+					organizations and their products - how it can drive both business and technology. We can learn to simplify without sacrificing 
+					comfort and meaning.""",
+	'inStock' : True,
+	'owner' : 'Bruna Calheiros',
+	'email' : 'bms415@nyu.edu',
+	'itpStatus' : 'Current Student'
+	}
 
-# Login into your account page
-@app.route('/login')
-def login():
-    return 'Hello World'
 
-# About page
-@app.route('/about')
-def about():
-    return """
-    <h2>'Something borrowed…' is a database of useful things that you would lend to other ITPers.</h2></br> 
-    <p>It’s an easy way to access ITPers inventory for researches and materials, to find books and movies, or to get prototypes done.</p></br></br></br>
-	<ul>
-		<li>- Faster Prototypes</li>
-		<li>- Economy: less money spent!</li>
-		<li>- Community sense: let's help each other!</li> 
-		<li>- Networking: interact and meet new people</li>
-	</ul>
-    """
+# this is our main page
+@app.route("/")
+def index():
+	# render the template, pass in the animals dictionary refer to it as 'animals'
+	return render_template("main.html", books=books)
+
+
+
+# pages inside a category
+@app.route("/books/<title>")
+def show_title(title):
+	# render the template, pass in the animals dictionary refer to it as 'animals'
+	return 'Title %s' % title
+
+
 
 
 # start the webserver
 if __name__ == "__main__":
 	app.debug = True
+	
 	port = int(os.environ.get('PORT', 5000)) # locally PORT 5000, Heroku will assign its own port
 	app.run(host='0.0.0.0', port=port)
+
+
+
+	
