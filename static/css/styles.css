@@ -31,7 +31,8 @@ p {
      -moz-border-radius: 0;
           border-radius: 0;
   top: 0;
-  background-image: url('http://colourlovers.com.s3.amazonaws.com/images/patterns/50/50713.png');
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#552B3A), color-stop(100%,#844561));
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#552B3A', endColorstr='#844561',GradientType=1 );
 }
 
 .hero-one p {
@@ -43,6 +44,7 @@ p {
 
 .brand {
   width: 400px;
+  padding-bottom: 10px;
   height: auto;
   margin-left: 30px;
 }
