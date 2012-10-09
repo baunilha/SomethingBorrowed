@@ -32,7 +32,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/Baunilha/Desktop/Baunilha/ITP/ITP3/DWD/Sth/venv"
+set -gx VIRTUAL_ENV "/Users/Baunilha/Desktop/Baunilha/ITP/ITP3/DWD/Sth v2 /venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

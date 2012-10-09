@@ -39,7 +39,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/Baunilha/Desktop/Baunilha/ITP/ITP3/DWD/Sth/venv"
+VIRTUAL_ENV="/Users/Baunilha/Desktop/Baunilha/ITP/ITP3/DWD/Sth v2 /venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
