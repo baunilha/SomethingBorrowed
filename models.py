@@ -4,10 +4,6 @@ from mongoengine import *
 from flask.ext.mongoengine.wtf import model_form
 from datetime import datetime
 
-class Log(Document):
-	text = StringField()
-	timestamp = DateTimeField(default=datetime.now())
-
 
 class Book(Document):
     title = StringField(required=True, max_length=120, verbose_name="Title")
@@ -25,9 +21,7 @@ class Book(Document):
     # Email is another different field
     email = EmailField(required=True, max_length=50, verbose_name="Email")
 
+    # itpStatus is a list of Strings
     itpStatus = ListField(StringField(max_length=30))
-
-    # Timestamp will record the date and time idea was created.
-	timestamp = DateTimeField(default=datetime.now())
 
 BookForm = model_form(Book)

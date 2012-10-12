@@ -10,7 +10,7 @@
         <div class="hero-unit">
           <h1>Share your books!</h1>
           <p>'Something Borrowed' is database of useful things that you would lend to other ITPers. Right now you can lend and borrow books from our ITP community. Stay tuned... Other improvements and items are coming soon!</p>
-          <p><a class="btn btn-info btn-large" href="/submit.html">Add a book &raquo;</a></p>
+          <p><a class="btn btn-info btn-large" href="/submit">Add a book &raquo;</a></p>
         </div>
       </div>
     </div>
@@ -45,15 +45,23 @@
       	<div class="row-fluid">
             <ul class="thumbnails">
               
-					{% for name, info in books.items() %}
+					{% for name, book in books %}
           <li class="span3">
               <div class="thumbnail">
                 <div class="caption">
-        					<img class="img-thumbnail" src="/static/img/books/{{ info.get('image') }}" alt="">
+        					<img class="img-thumbnail" src="http://placehold.it/300x200" alt="">
+    
+                    <h3><a href="/books/{{ book.slug }}">{{ name }}</a></h3>
+                    <p><em>[{{ book.type }}, by {{ book.author }}]</em></p>
+                    <p><em>"{{ book.description }}"</em></p>
+                    <a class="link_edit" href="/books/{{ book.slug }}edit">edit</a>
+
+                  <!--
         					<h3>{{ name }}</h3>
         					<p><em>[{{ info.get('type')}}, by {{ info.get('author')}}]</em></p>
         					<p><em>"{{ info.get('description')}}"</em></p>
                   <a href="/books/{{ info.get('title') }}" class="btn btn-info">Borrow</a>
+                  -->
                 </div>
               </div>
           </li>  

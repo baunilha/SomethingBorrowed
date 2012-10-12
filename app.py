@@ -8,7 +8,7 @@ from flask import Flask, request, render_template, redirect, abort
 
 # import all of mongoengine
 # from mongoengine import *
-from mongoengine import *
+from flask.ext.mongoengine import mongoengine
 
 # import data models
 import models
@@ -24,83 +24,21 @@ app.logger.debug("Connecting to MongoLabs")
 
 # Create the lists that match the name of the ListField in the models.py
 bookType = ['Paperback','Hardcover','PDF','Kindle']
-genre = ['Fiction', 'Programming', 'Physical Computing', 'ITP', 'Design', 'Art']
+genre = ['Fiction', 'Programming', 'Physical Computing', 'ITP Essentials', 'Design', 'Art']
 itpStatus = ['Current Student', 'ITP Alumni', 'Faculty', 'Resident', 'ITP Adjunct']
 
 
 # --------- Routes ----------
 
 
-# ITP'S CABINET
-books = { }
-
-books['Understanding Comics'] = {
-	'title' : 'Understanding Comics',
-	'author' : 'Scott McCloud',
-	'image' : 'understanding_comics.gif',
-	'type' : 'Paperback',
-	'genre' : 'Art',
-	'description' : """Praised throughout the cartoon industry by such luminaries as Art Spiegelman, 
-					Matt Groening, and Will Eisner, this innovative comic book provides a detailed look at the history, 
-					meaning, and art of comics and cartooning.""",
-	'inStock' : True,
-	'owner' : 'Bruna Calheiros',
-	'email' : 'bms415@nyu.edu',
-	'itpStatus' : 'Current Student'
-}
-
-books['Learning Processing'] = { 
-	'title' : 'Learning Processing',
-	'author' : 'Daniel Shiffman',
-	'image' : 'learning_processing.gif',
-	'type' : 'Paperback',
-	'genre' : 'Programming',
-	'description' : """This book teaches you the basic building blocks of programming needed to create cutting-edge graphics applications including 
-					interactive art, live video processing, and data visualization.""",
-	'inStock' : True,
-	'owner' : 'Bruna Calheiros',
-	'email' : 'bms415@nyu.edu',
-	'itpStatus' : 'Current Student'
-	}
-
-books['Getting Started with Arduino'] = { 
-	'title' : 'Getting Started with Arduino',
-	'author' : 'Massimo Banzi',
-	'image' : 'getting_started_with_arduino.gif',
-	'type' : 'Paperback',
-	'genre' : 'Programming',
-	'description' : """Arduino is the open-source electronics prototyping platform that\'s taken the design and hobbyist world by storm. 
-					This thorough introduction, updated for Arduino 1.0, gives you lots of ideas for projects and helps you work with them right away.""",
-	'inStock' : True,
-	'owner' : 'Bruna Calheiros',
-	'email' : 'bms415@nyu.edu',
-	'itpStatus' : 'Current Student'
-	}
-
-books['The Laws of Simplicity'] = { 
-	'title' : 'The Laws of Simplicity',
-	'author' : 'John Maeda',
-	'image' : 'the_laws_of_simplicity.gif',
-	'type' : 'Hardcover',
-	'genre' : 'Design',
-	'description' : """Maeda's concise guide to simplicity in the digital age shows us how this idea can be a cornerstone of 
-					organizations and their products - how it can drive both business and technology. We can learn to simplify without sacrificing 
-					comfort and meaning.""",
-	'inStock' : True,
-	'owner' : 'Bruna Calheiros',
-	'email' : 'bms415@nyu.edu',
-	'itpStatus' : 'Current Student'
-	}
-
-
 # this is our main page
 @app.route("/")
 def index():
 	# render the template, pass in the animals dictionary refer to it as 'animals'
-	return render_template("main.html", books=books)
+	return render_template("main.html", books=models.Book.objects())
 
 
-@app.route("/submit", methods=['GET'])
+@app.route("/submit", methods=['GET','POST'])
 def submit_form():
 
 	app.logger.debug(request.form.getlist('bookType'))
@@ -126,6 +64,35 @@ def submit_form():
 
 		return redirect('/books/%s' % book.slug)
 
+	else:
+
+		# for form management, checkboxes are weird (in wtforms)
+		# prepare checklist items for form
+		# you'll need to take the form checkboxes submitted
+		# and book_form.bookType, book_form.genre and book_form.itpStatus list needs to be populated.
+		if request.form.getlist('bookType'):
+			for b in request.form.getlist('bookType'):
+				idea_form.bookType.append_entry(b)
+
+		if request.form.getlist('genre'):
+			for g in request.form.getlist('genre'):
+				idea_form.genre.append_entry(g)
+
+		if request.form.getlist('itpStatus'):
+			for i in request.form.getlist('itpStatus'):
+				idea_form.itpStatus.append_entry(i)
+
+		# render the template
+		templateData = {
+			'books' : models.Book.objects(),
+			'bookType' : bookType,
+			'genre' : genre,
+			'itpStatus' : itpStatus,
+			'form' : book_form
+		}
+
+		return render_template("submit.html", **templateData)
+
 
 # pages inside a category
 @app.route("/books/<book_slug>")
@@ -147,6 +114,11 @@ def book_display(book_slug):
 
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
+
 # slugify the title 
 # via http://flask.pocoo.org/snippets/5/
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
@@ -158,6 +130,7 @@ def slugify(text, delim=u'-'):
 	return unicode(delim.join(result))
 
 
+# --------- Server On ----------
 # start the webserver
 if __name__ == "__main__":
 	app.debug = True

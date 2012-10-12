@@ -9,80 +9,96 @@
     <div class="container">
       	<div class="row-fluid">
             
-            <form method="POST" action="/">
+            <form method='POST' action="/">
                 <legend><h3>Share a book:</h3></legend>
 
-                {{ form.title.label(class='myLabelCssClass') }}
+                <p>
+                <label for="title">Title</label>
                 {{ form.title(class='myTextboxCssClass', type='textarea') }}
                 {{ render_error(form.title) }}  {# render_error inside _form_helpers.html #}
+                </p>
                 <!--
-                <label for="title">Project Title</label>
+                {{ form.title.label(class='myLabelCssClass') }}
                 <input type="text" id="title" name="title">
                 -->
 
-                {{ form.author.label(class='myLabelCssClass') }}
+                <p>
+                <label for="author">Author</label>
                 {{ form.author(class='myTextboxCssClass', type='textarea') }}
                 {{ render_error(form.author) }}  {# render_error inside _form_helpers.html #}
+                </p>
                 <!--
-                <label for="author">Author</label>
+                {{ form.author.label(class='myLabelCssClass') }}
                 <input type="text" id="author" name="author" value="{{ form.author }}">
                 -->
 
-                <br>
                 <label>Type</label>
                 {# comment - loop through bookType and create a dropdown menu #}
-                {% for t in bookType|sort %}
                 <label class="dropdown">
+                <select>
+                {% for t in bookType|sort %}
                 <option value="{{ t|replace(" ","_") }}" {% if t|replace(" ","_") in form.bookType.data %} checked=checked {% endif %} > {{ t|title }}
+                {% endfor %}
+                </select>
                 </label>
                 <!-- Book Type -->
 
-                <br>
+                <p>
                 <label>Genre</label>
-                <span class="help-block">Select as many as you need.</span>
+                <em><span class="help-block">(Select as many as you need)</span></em>
 
                 {# comment - loop through genre and create checkboxes #}
                 {% for g in genre|sort %}
                 <label class="checkbox">
                 <input type="checkbox" name="genre" value="{{ g|replace(" ","_") }}" {% if g|replace(" ","_") in form.genre.data %}checked=checked{% endif %} > {{ g|title }}
                 </label>
+                {% endfor %}
                 <!-- Book Genre -->
+                </p>
 
-                {{ form.description.label }}
+                <br>
+                <label for="description">Description</label>
                 {{ render_textarea(form.description, cols="50", rows="6") }} {# render_textarea inside _form_helpers.html #}
                 {{ render_error(form.description) }} {# render_error inside _form_helpers.html #}
                 <!--
-                <label for="description">Description</label>
+                {{ form.description.label }}
                 <input type="text" id="description" name="description">
                 -->
 
-                <br><hr><br>
-                {{ form.owner.label(class='myLabelCssClass') }}
+                <hr>
+                <p>
+                <label for="owner">Owner</label>
                 {{ form.owner(class='myTextboxCssClass', type='textarea') }}
                 {{ render_error(form.owner) }}  {# render_error inside _form_helpers.html #}
+                </p>
                 <!--
-                <label for="owner">Owner</label>
+                {{ form.owner.label(class='myLabelCssClass') }}
                 <input type="text" id="owner" name="owner">
                 -->
 
-                {{ form.email.label(class='myLabelCssClass') }}
+                <p>
+                <label for="email">Email</label>
                 {{ form.email(class='myTextboxCssClass', type='textarea') }}
                 {{ render_error(form.email) }}  {# render_error inside _form_helpers.html #}
+                </p>
                 <!--
-                <label for="email">Email</label>
+                {{ form.email.label(class='myLabelCssClass') }}
                 <input type="text" id="email" name="email">
                 -->
 
-                <br>
-                <label>itpStatus</label>
+                <p>
+                <label>ITP Status</label>
                 {# comment - loop through itpStatus and create a dropdown menu #}
-                {% for i in itpStatus|sort %}
                 <label class="dropdown">
+                <select>
+                {% for i in itpStatus|sort %}
                 <option value="{{ i|replace(" ","_") }}" {% if i|replace(" ","_") in form.itpStatus.data %} checked=checked {% endif %} > {{ i|title }}
-                </label>
                 {% endfor %}
+                </select>
+                </label>
+                </p>
 
-                <button type="submit" class="btn btn-primary">Add Book</button>
+                <button type="submit" class="btn btn-info btn-large">Add Book</button>
           </form>
 
         </div>
