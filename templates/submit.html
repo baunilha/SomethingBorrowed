@@ -6,10 +6,10 @@
 {% block body %}
 
       <!-- Submit a new book item form -->
-    <div class="container">
+    <div class="container middle">
       	<div class="row-fluid">
             
-            <form method='POST' action="/">
+            <form method='POST' action="/submit">
                 <legend><h3>Share a book:</h3></legend>
 
                 <p>
@@ -35,7 +35,7 @@
                 <label>Type</label>
                 {# comment - loop through bookType and create a dropdown menu #}
                 <label class="dropdown">
-                <select>
+                <select name="bookType">
                 {% for t in bookType|sort %}
                 <option value="{{ t|replace(" ","_") }}" {% if t|replace(" ","_") in form.bookType.data %} checked=checked {% endif %} > {{ t|title }}
                 {% endfor %}
@@ -90,7 +90,7 @@
                 <label>ITP Status</label>
                 {# comment - loop through itpStatus and create a dropdown menu #}
                 <label class="dropdown">
-                <select>
+                <select name="itpStatus">
                 {% for i in itpStatus|sort %}
                 <option value="{{ i|replace(" ","_") }}" {% if i|replace(" ","_") in form.itpStatus.data %} checked=checked {% endif %} > {{ i|title }}
                 {% endfor %}

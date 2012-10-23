@@ -34,12 +34,12 @@ itpStatus = ['Current Student', 'ITP Alumni', 'Faculty', 'Resident', 'ITP Adjunc
 # this is our main page
 @app.route("/")
 def index():
-	# render the template, pass in the animals dictionary refer to it as 'animals'
+	# render the template, retrieve 'books' from the database
 	return render_template("main.html", books=models.Book.objects())
 
 
 @app.route("/submit", methods=['GET','POST'])
-def submit_form():
+def submit():
 
 	app.logger.debug(request.form.getlist('bookType'))
 	app.logger.debug(request.form.getlist('genre'))
@@ -52,12 +52,16 @@ def submit_form():
 	
 		# get form data - create new book
 		book = models.Book()
+		
 		book.title = request.form.get('title','no title')
 		book.slug = slugify(book.title)
 		book.author = request.form.get('author','anonymous')
-		book.description = request.form.get('description','')
 		book.bookType = request.form.getlist('bookType')
 		book.genre = request.form.getlist('genre')
+		book.description = request.form.get('description','')
+		
+		book.owner = request.form.get('owner')
+		book.email = request.form.get('email')
 		book.itpStatus = request.form.getlist('itpStatus')
 		
 		book.save()

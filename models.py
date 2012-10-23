@@ -6,9 +6,9 @@ from datetime import datetime
 
 
 class Book(Document):
-    title = StringField(required=True, max_length=120, verbose_name="Title")
+    title = StringField(required=True, max_length=120, verbose_name="title")
     slug = StringField()
-    author = StringField(required=True, max_length=120, verbose_name="Author")
+    author = StringField(required=True, max_length=120, verbose_name="author")
     image = StringField(max_length=50)
 
     # Book type and genre are lists of Strings
@@ -16,10 +16,10 @@ class Book(Document):
     genre = ListField(StringField(max_length=30))
 
     description = StringField(max_length=500)
-    owner = StringField(required=True, max_length=120, verbose_name="Owner")
+    owner = StringField(required=True, max_length=200, verbose_name="owner")
 
     # Email is another different field
-    email = EmailField(required=True, max_length=50, verbose_name="Email")
+    email = EmailField(required=True, max_length=100, verbose_name="email")
 
     # itpStatus is a list of Strings
     itpStatus = ListField(StringField(max_length=30))

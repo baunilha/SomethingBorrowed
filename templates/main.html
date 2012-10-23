@@ -41,27 +41,21 @@
 
 
       <!-- Thumbnails -->
-    <div class="container">
+    <div class="container middle">
       	<div class="row-fluid">
             <ul class="thumbnails">
               
-					{% for name, book in books %}
+					{% for book in books %}
           <li class="span3">
               <div class="thumbnail">
                 <div class="caption">
         					<img class="img-thumbnail" src="http://placehold.it/300x200" alt="">
     
-                    <h3><a href="/books/{{ book.slug }}">{{ name }}</a></h3>
-                    <p><em>[{{ book.type }}, by {{ book.author }}]</em></p>
+                    <h3>{{ book.title }}</h3>
+                    <p><em>[{% for b in book.bookType %}{{ b }}{% endfor %}, by {{ book.author }}]
+                    </em></p>
                     <p><em>"{{ book.description }}"</em></p>
-                    <a class="link_edit" href="/books/{{ book.slug }}edit">edit</a>
-
-                  <!--
-        					<h3>{{ name }}</h3>
-        					<p><em>[{{ info.get('type')}}, by {{ info.get('author')}}]</em></p>
-        					<p><em>"{{ info.get('description')}}"</em></p>
-                  <a href="/books/{{ info.get('title') }}" class="btn btn-info">Borrow</a>
-                  -->
+                    <a href="/books/{{ book.slug }}" class="btn btn-info">Borrow</a>
                 </div>
               </div>
           </li>  
@@ -70,7 +64,6 @@
             </ul>
         </div>
     </div>
-
 
           <!-- Pagination -->
       <div class="container">

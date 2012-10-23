@@ -163,6 +163,10 @@ input.span2, textarea.span2, .uneditable-input.span2 {
           border-radius: 4px;
 }
 
+.middle {
+  margin-top: 100px;
+}
+
 
 .dois {
   height: 100px;
@@ -254,7 +258,6 @@ input[type="text"]:focus, input[type="password"]:focus {
 /* Thumbnails images
 --------------------------------------------------------*/
 .thumbnail {
-  margin-top: 20px;
   background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#2E1720), color-stop(100%,#552B3A));
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2E1720', endColorstr='#552B3A',GradientType=1 );
   border: 0px;
